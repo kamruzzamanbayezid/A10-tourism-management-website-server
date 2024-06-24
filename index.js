@@ -28,11 +28,17 @@ async function run() {
 
             const touristsCollection = client.db("touristsDB").collection("tourists");
 
+            app.get('/touristSpots', async (req, res) => {
+                  const result = await touristsCollection.find().toArray();
+                  res.send(result);
+            })
+
             app.post('/touristSpots', async (req, res) => {
                   const touristSpot = req.body;
                   const result = await touristsCollection.insertOne(touristSpot);
                   res.send(result);
             })
+
 
             // Send a ping to confirm a successful connection
             await client.db("admin").command({ ping: 1 });
