@@ -10,7 +10,6 @@ app.use(cors());
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.SECRET_USER_NAME}:${process.env.SECRET_USER_PASSWORD}@cluster0.d8abmis.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
-console.log(uri);
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -51,6 +50,27 @@ async function run() {
             app.post('/touristSpots', async (req, res) => {
                   const touristSpot = req.body;
                   const result = await touristsCollection.insertOne(touristSpot);
+                  res.send(result);
+            })
+
+            app.put('/touristSpotDetails/:id', async (req, res) => {
+                  const id = req.params.id;
+                  const touristSpot = req.body;
+                  const filter = { _id: new ObjectId(id) };
+                  const options = { upsert: true };
+                  const updateTouristSpot = {
+                        $set: {
+                              ...touristSpot
+                        },
+                  };
+                  const result = await touristsCollection.updateOne(filter, updateTouristSpot, options);
+                  res.send(result);
+            })
+
+            app.delete('/touristSpots/:id', async (req, res) => {
+                  const id = req.params.id;
+                  const query = { _id: new ObjectId(id) };
+                  const result = await touristsCollection.deleteOne(query);
                   res.send(result);
             })
 
