@@ -26,6 +26,7 @@ async function run() {
             await client.connect();
 
             const touristsCollection = client.db("touristsDB").collection("tourists");
+            const countriesCollection = client.db("touristsDB").collection("countries");
 
             app.get('/touristSpots', async (req, res) => {
                   const result = await touristsCollection.find().toArray();
@@ -71,6 +72,12 @@ async function run() {
                   const id = req.params.id;
                   const query = { _id: new ObjectId(id) };
                   const result = await touristsCollection.deleteOne(query);
+                  res.send(result);
+            })
+
+            // for countries
+            app.get('/countries', async (req, res) => {
+                  const result = await countriesCollection.find().toArray();
                   res.send(result);
             })
 
