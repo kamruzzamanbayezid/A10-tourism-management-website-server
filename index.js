@@ -27,6 +27,7 @@ async function run() {
 
             const touristsCollection = client.db("touristsDB").collection("tourists");
             const countriesCollection = client.db("touristsDB").collection("countries");
+            const tourGuidesCollection = client.db("touristsDB").collection("tourGuides");
 
             app.get('/touristSpots', async (req, res) => {
                   const result = await touristsCollection.find().toArray();
@@ -97,6 +98,13 @@ async function run() {
                   const result = await touristsCollection.find(query).toArray();
                   res.send(result);
             })
+
+            // fot tour guide
+            app.get('/tourGuides', async (req, res) => {
+                  const result = await tourGuidesCollection.find().toArray();
+                  res.send(result);
+            })
+
 
 
             // Send a ping to confirm a successful connection
